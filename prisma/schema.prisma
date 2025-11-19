@@ -1,0 +1,40 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client" 
+  output = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Film {
+  id Int @id @default(autoincrement())
+  title String
+  description String?
+  director String
+} 
+
+model Serie {
+  id Int @id @default(autoincrement())
+  title String
+  description String?
+  season Int
+  director String
+  episodes Episode[]
+}
+
+model Episode {
+  id Int @id @default(autoincrement())
+  title String
+  duration Int
+  views Int
+  serieId Int
+  serie Serie @relation(fields: [serieId], references: [id])
+}
