@@ -25,7 +25,17 @@ export const recupererLesSeries = async (req, res) => {
             episodes: true 
         }
     })
-    res.json(series)
+
+    // Convert episodes array to a comma-separated string of titles for each serie
+    const seriesWithEpisodesString = series.map((s) => {
+        const episodes = Array.isArray(s.episodes) && s.episodes.length
+            ? s.episodes.map(e => e.title).join(', ')
+            : ''
+
+        return { ...s, episodes }
+    })
+
+    res.json(seriesWithEpisodesString)
 }
 
 
@@ -43,9 +53,16 @@ export const recupererUneSerie = async (req, res) => {
 
     // verifier si la série n'a pas été trouvé
     if (!serie) {
-        res.status(404).json({ error: "Serie non trouvé" })
+        return res.status(404).json({ error: "Serie non trouvé" })
     }
 
+    // Convert episodes array to a comma-separated string of titles for this serie
+    const episodes = Array.isArray(serie.episodes) && serie.episodes.length
+        ? serie.episodes.map(e => e.title).join(', ')
+        : ''
+
+    const serieWithEpisodesString = { ...serie, episodes }
+
     // renvoyer cette serie
-    res.json(serie)
+    res.json(serieWithEpisodesString)
 }
