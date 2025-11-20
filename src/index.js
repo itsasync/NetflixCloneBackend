@@ -3,6 +3,7 @@ import express from "express"
 // on importe le composant filmRouter
 import filmRouter from "./routes/film.route.js"
 import serieRouter from "./routes/serie.route.js"
+import cors from "cors";
 
 // Créer une nouvelle app avec ce module
 const app = express()
@@ -12,6 +13,7 @@ const port = 3000
 
 // App peut lire le json
 app.use(express.json())
+app.use(cors());
 
 // Enregistrer le router 
 app.use('/films', filmRouter)
@@ -23,6 +25,6 @@ app.get('/', (req, res) => {
 })
 
 // Lancer le serveur sur le port 3000 et met un message si ça a fonctionné
-app.listen(port, () => {
-    console.log("Le serveur NetflixClone est lancé !")
-})
+app.listen(port, "0.0.0.0", () => {
+    console.log("Le serveur NetflixClone est lancé !");
+});
