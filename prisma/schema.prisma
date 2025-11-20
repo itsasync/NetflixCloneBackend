@@ -25,6 +25,7 @@ model Serie {
   id Int @id @default(autoincrement())
   title String
   description String?
+  popularity Int @default(0)
   season Int
   image String @default("https://cdn.pixabay.com/photo/2020/02/15/04/19/chicken-4849979_640.jpg")
   director String

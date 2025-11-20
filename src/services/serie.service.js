@@ -28,11 +28,13 @@ export const recupererLesSeries = async (req, res) => {
 
     // Convert episodes array to a comma-separated string of titles for each serie
     const seriesWithEpisodesString = series.map((s) => {
-        const episodes = Array.isArray(s.episodes) && s.episodes.length
-            ? s.episodes.map(e => e.title).join(', ')
+        const episodesInfos = Array.isArray(s.episodes) ? s.episodes : []
+        const episodes = episodesInfos.length
+            ? episodesInfos.map(e => e.title).join(', ')
             : ''
 
-        return { ...s, episodes }
+        // keep full infos under episodesInfos, and episodes remains the comma-separated titles
+        return { ...s, episodes, episodesInfos }
     })
 
     res.json(seriesWithEpisodesString)
@@ -57,11 +59,12 @@ export const recupererUneSerie = async (req, res) => {
     }
 
     // Convert episodes array to a comma-separated string of titles for this serie
-    const episodes = Array.isArray(serie.episodes) && serie.episodes.length
-        ? serie.episodes.map(e => e.title).join(', ')
+    const episodesInfos = Array.isArray(serie.episodes) ? serie.episodes : []
+    const episodes = episodesInfos.length
+        ? episodesInfos.map(e => e.title).join(', ')
         : ''
 
-    const serieWithEpisodesString = { ...serie, episodes }
+    const serieWithEpisodesString = { ...serie, episodes, episodesInfos }
 
     // renvoyer cette serie
     res.json(serieWithEpisodesString)
